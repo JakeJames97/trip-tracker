@@ -1,0 +1,103 @@
+@use 'variables';
+@use 'typography';
+
+.auth-title {
+    margin: 0 0 5px;
+    font-size: typography.$font-size-lg;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.auth-subtitle {
+    margin: 0 0 32px;
+    font-size: typography.$font-size-sm;
+    color: variables.$color-text-muted;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    &__label {
+        font-size: typography.$font-size-xs;
+        font-weight: 500;
+        color: variables.$color-text-muted;
+    }
+
+    &__error {
+        font-size: typography.$font-size-xs;
+        color: variables.$color-danger;
+    }
+
+    input {
+        padding: 10px 13px;
+        border: 1px solid variables.$color-border;
+        border-radius: 8px;
+        font-size: typography.$font-size-base;
+        background: variables.$color-surface;
+        color: variables.$color-text;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+        &:focus-visible {
+            outline: 2px solid variables.$color-accent;
+            outline-offset: 1px;
+            border-color: variables.$color-accent;
+            box-shadow: 0 0 0 3px rgba(31, 122, 77, 0.12);
+        }
+    }
+}
+
+.auth-error {
+    margin: 0;
+    font-size: typography.$font-size-sm;
+    color: variables.$color-danger;
+}
+
+.auth-submit {
+    margin-top: 8px;
+    padding: 11px 16px;
+    border: none;
+    border-radius: 8px;
+    background: variables.$color-accent;
+    color: #fff;
+    font-size: typography.$font-size-base;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(31, 122, 77, 0.15);
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover {
+        background: variables.$color-accent-hover;
+        box-shadow: 0 2px 8px rgba(31, 122, 77, 0.25);
+    }
+
+    &:focus-visible {
+        outline: 2px solid variables.$color-accent;
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+}
+
+.auth-footer {
+    margin-top: 24px;
+    font-size: typography.$font-size-sm;
+    color: variables.$color-text-muted;
+    text-align: center;
+
+    a {
+        color: variables.$color-accent;
+        font-weight: 500;
+    }
+}

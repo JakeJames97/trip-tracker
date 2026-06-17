@@ -19,6 +19,17 @@ export default typescriptEslint.config(
                 parser: typescriptEslint.parser,
             },
         },
+      rules: {
+        "vue/max-attributes-per-line": ["error", {
+          "singleline": {
+            "max": 4
+          },
+          "multiline": {
+            "max": 1
+          }
+        }],
+        "vue/singleline-html-element-content-newline": false
+      }
     },
     {
         files: ['vite.config.ts'],
