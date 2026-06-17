@@ -20,40 +20,6 @@
     gap: 20px;
 }
 
-.form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-
-    &__label {
-        font-size: typography.$font-size-xs;
-        font-weight: 500;
-        color: variables.$color-text-muted;
-    }
-
-    &__error {
-        font-size: typography.$font-size-xs;
-        color: variables.$color-danger;
-    }
-
-    input {
-        padding: 10px 13px;
-        border: 1px solid variables.$color-border;
-        border-radius: 8px;
-        font-size: typography.$font-size-base;
-        background: variables.$color-surface;
-        color: variables.$color-text;
-        transition: border-color 0.15s ease, box-shadow 0.15s ease;
-
-        &:focus-visible {
-            outline: 2px solid variables.$color-accent;
-            outline-offset: 1px;
-            border-color: variables.$color-accent;
-            box-shadow: 0 0 0 3px rgba(31, 122, 77, 0.12);
-        }
-    }
-}
-
 .auth-error {
     margin: 0;
     font-size: typography.$font-size-sm;

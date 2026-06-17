@@ -1,10 +1,10 @@
 <template>
   <div class="auth-content">
     <h1 class="auth-title">Log in to your account</h1>
-    <p class="auth-subtitle">Enter your email and password below to log in</p>
+    <p class="auth-subtitle">Enter your email/username and password below to log in</p>
 
     <form @submit.prevent="onSubmit" class="auth-form">
-      <FormField name="login" label="Email Or Username" />
+      <FormField name="login" label="Email/Username" />
       <FormField name="password" label="Password" type="password" />
 
       <p v-if="generalError" class="auth-error">{{ generalError }}</p>
@@ -38,7 +38,7 @@ const generalError = ref<string | null>(null);
 
 const schema = toTypedSchema(
   yup.object({
-    email: yup.string().required('Email is required').email('Enter a valid email address'),
+    login: yup.string().required('Email or username is required'),
     password: yup.string().required('Password is required'),
   }),
 );
