@@ -7,7 +7,7 @@
 </template>
 
 <style scoped lang="scss">
-@use '../../css/variables';
+@use '../../css/colours';
 
 .auth-page {
   min-height: 100vh;
@@ -19,8 +19,8 @@
 .auth-card {
   width: 100%;
   max-width: 480px;
-  background: variables.$color-surface;
-  border: 1px solid variables.$color-border;
+  background: colours.$colour-surface;
+  border: 1px solid colours.$colour-border;
   border-radius: 12px;
   padding: 36px 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);

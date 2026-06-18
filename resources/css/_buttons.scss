@@ -1,0 +1,59 @@
+@use 'colours';
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 16px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-colour 0.15s ease, border-colour 0.15s ease, box-shadow 0.15s ease;
+
+    &:focus-visible {
+        outline: 2px solid colours.$colour-accent;
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+    &--full {
+        width: 100%;
+    }
+
+    &--primary {
+        background: colours.$colour-accent;
+        color: #fff;
+        box-shadow: 0 1px 2px rgba(31, 122, 77, 0.15);
+
+        &:hover:not(:disabled) {
+            background: colours.$colour-accent-hover;
+            box-shadow: 0 2px 8px rgba(31, 122, 77, 0.25);
+        }
+    }
+
+    &--outline {
+        background: transparent;
+        border-color: colours.$colour-border;
+        color: colours.$colour-text;
+
+        &:hover:not(:disabled) {
+            background: colours.$colour-bg;
+        }
+    }
+
+    &--danger {
+        background: colours.$colour-danger;
+        color: #fff;
+
+        &:hover:not(:disabled) {
+            background: colours.$colour-danger-hover;
+        }
+    }
+}

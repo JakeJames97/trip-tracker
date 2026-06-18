@@ -9,9 +9,9 @@
 
       <p v-if="generalError" class="auth-error">{{ generalError }}</p>
 
-      <button type="submit" class="auth-submit" :disabled="isSubmitting">
+      <BaseButton type="submit" :disabled="isSubmitting">
         {{ isSubmitting ? 'Logging in…' : 'Log In' }}
-      </button>
+      </BaseButton>
     </form>
 
     <p class="auth-footer">
@@ -29,6 +29,7 @@ import * as yup from 'yup';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/useAuthStore.ts';
 import FormField from '@/components/FormField.vue';
+import BaseButton from '@/components/BaseButton.vue';
 import type { AxiosError } from 'axios';
 import type {LoginCredentials} from "@/types/auth.ts";
 

@@ -10,9 +10,9 @@
 
       <p v-if="generalError" class="auth-error">{{ generalError }}</p>
 
-      <button type="submit" class="auth-submit" :disabled="isSubmitting">
+      <BaseButton type="submit" :disabled="isSubmitting">
         {{ isSubmitting ? 'Registering…' : 'Register' }}
-      </button>
+      </BaseButton>
     </form>
 
     <p class="auth-footer">
@@ -31,6 +31,7 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/useAuthStore.ts';
 import type { AxiosError } from 'axios';
 import FormField from "@/components/FormField.vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 const auth = useAuthStore();
 const router = useRouter();

@@ -1,4 +1,4 @@
-@use 'variables';
+@use 'colours';
 @use 'typography';
 
 .form-field {
@@ -9,27 +9,27 @@
     &__label {
         font-size: typography.$font-size-xs;
         font-weight: 500;
-        color: variables.$color-text-muted;
+        color: colours.$colour-text-muted;
     }
 
     &__error {
         font-size: typography.$font-size-xs;
-        color: variables.$color-danger;
+        color: colours.$colour-danger;
     }
 
     input {
         padding: 10px 13px;
-        border: 1px solid variables.$color-border;
+        border: 1px solid colours.$colour-border;
         border-radius: 8px;
         font-size: typography.$font-size-base;
-        background: variables.$color-surface;
-        color: variables.$color-text;
+        background: colours.$colour-surface;
+        color: colours.$colour-text;
         transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
         &:focus-visible {
-            outline: 2px solid variables.$color-accent;
+            outline: 2px solid colours.$colour-accent;
             outline-offset: 1px;
-            border-color: variables.$color-accent;
+            border-color: colours.$colour-accent;
             box-shadow: 0 0 0 3px rgba(31, 122, 77, 0.12);
         }
     }

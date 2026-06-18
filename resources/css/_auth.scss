@@ -1,4 +1,4 @@
-@use 'variables';
+@use 'colours';
 @use 'typography';
 
 .auth-title {
@@ -11,7 +11,7 @@
 .auth-subtitle {
     margin: 0 0 32px;
     font-size: typography.$font-size-sm;
-    color: variables.$color-text-muted;
+    color: colours.$colour-text-muted;
 }
 
 .auth-form {
@@ -23,47 +23,17 @@
 .auth-error {
     margin: 0;
     font-size: typography.$font-size-sm;
-    color: variables.$color-danger;
-}
-
-.auth-submit {
-    margin-top: 8px;
-    padding: 11px 16px;
-    border: none;
-    border-radius: 8px;
-    background: variables.$color-accent;
-    color: #fff;
-    font-size: typography.$font-size-base;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 1px 2px rgba(31, 122, 77, 0.15);
-    transition: background-color 0.15s ease, box-shadow 0.15s ease;
-
-    &:hover {
-        background: variables.$color-accent-hover;
-        box-shadow: 0 2px 8px rgba(31, 122, 77, 0.25);
-    }
-
-    &:focus-visible {
-        outline: 2px solid variables.$color-accent;
-        outline-offset: 2px;
-    }
-
-    &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        box-shadow: none;
-    }
+    color: colours.$colour-danger;
 }
 
 .auth-footer {
     margin-top: 24px;
     font-size: typography.$font-size-sm;
-    color: variables.$color-text-muted;
+    color: colours.$colour-text-muted;
     text-align: center;
 
     a {
-        color: variables.$color-accent;
+        color: colours.$colour-accent;
         font-weight: 500;
     }
 }
