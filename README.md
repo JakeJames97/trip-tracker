@@ -1,58 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Trip Tracker
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A small full-stack application for planning trips, built to demonstrate a Laravel API working with a Vue 3 single-page frontend and a relational database.
 
-## About Laravel
+The domain is a simple hierarchy: a **trip** contains **destinations**, and each destination has a checklist of **tasks**. Users register, log in, and manage their own trips through full CRUD, with per-destination budgets that are converted to local currency via a live exchange-rate API.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Backend**
+- Laravel (PHP 8.5), served via Laravel Sail (Docker)
+- MySQL Database
+- Sanctum token authentication
+- Saloon for the 3rd party exchange-rate integration
 
-## Learning Laravel
+**Frontend**
+- Vue 3 / TypeScript
+- Pinia for state management
+- Vue Router
+- VeeValidate + Yup for form validation
+- Vite
+- Axios for data fetching from the API
+- Sass for styling
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**Tooling**
+- PHPUnit (feature + unit tests)
+- Larastan / PHPStan (static analysis)
+- Pint / Eslint (code style)
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
+## Domain Improvements
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- I would implement loading skeleton placeholders to make the website feel smoother
+- Allow trip budgets to accept other currencies, rather than assuming GBP
+- Support drag and drop for moving around tasks or even destinations
+- Allow image uploads for galleries etc
+- Trip sharing between users
+- Weather forecasts for each destination
+- Add a scheduled command that automatically updates trip statuses based on their dates (e.g. marking trips completed once past their end date).
+---
 
-## Agentic Development
+## Technical Improvements
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+- Add a mapping layer at the API level so a change to an API field only needs updating in one place rather than throughout the app. This could be done via 'model' style classes.
+- DTOs via spatie/laravel-data — would consolidate the request / resource / TypeScript-type duplication into a single source of truth, and can even generate the frontend types.
+- Unit tests via vitest & E2E tests via cypress for the frontend to improve code stability and reliability
+- Implement CI/CD pipelines
+---
+
+## Application Setup
+
+This project runs entirely through Laravel Sail, so the only host requirement is Docker.
 
 ```bash
-composer require laravel/boost --dev
+# 1. Clone
+git clone <REPO_URL>
+cd trip-tracker
 
-php artisan boost:install
+# 2. Environment
+cp .env.example .env
+
+# 3. Composer Install
+composer install
+
+# 4. Start the containers
+./vendor/bin/sail up -d
+
+# 5. App key, database, seed data
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan migrate --seed
+
+# 6. Frontend
+./vendor/bin/sail npm install
+./vendor/bin/sail npm run dev
+
+# 7. Running the test suite
+./vendor/bin/sail artisan test
 ```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
