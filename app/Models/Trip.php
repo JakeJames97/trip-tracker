@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property Carbon $start_date
+ * @property Carbon $end_date
+ * @property Carbon $created_at
+ */
 class Trip extends Model
 {
     use HasFactory, HasUuids;
