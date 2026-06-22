@@ -19,6 +19,8 @@ class Trip extends Model
 {
     use HasFactory, HasUuids;
 
+    protected $perPage = 14;
+
     protected $fillable = [
         'name',
         'description',

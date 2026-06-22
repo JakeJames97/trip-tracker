@@ -1,9 +1,15 @@
 import api from '@/lib/axios';
 import type {Trip, TripPayload} from '@/types/trips.ts';
+import type {Paginated} from "@/types/pagination.ts";
 
-export async function getTrips() {
-  const res = await api.get<{ data: Trip[]; }>('/trips');
-  return res.data.data;
+export async function getTrips(page = 1, status?: string): Promise<Paginated<Trip>> {
+  const res = await api.get<Paginated<Trip>>('/trips', {
+    params: {
+      page,
+      ...(status ? { status } : {}),
+    },
+  });
+  return res.data;
 }
 
 export async function getTrip(id: string) {

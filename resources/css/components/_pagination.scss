@@ -1,0 +1,39 @@
+@use '../common/colours';
+@use '../common/typography';
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 32px;
+
+    &__button {
+        border: 1px solid colours.$colour-border;
+        border-radius: 8px;
+        background: colours.$colour-surface;
+        font-size: typography.$font-size-sm;
+        color: colours.$colour-text;
+        &--active {
+            background: colours.$colour-accent;
+            border-color: colours.$colour-accent;
+            color: #fff;
+        }
+
+        &:disabled:not(.pagination__button--active) {
+            opacity: 0.5;
+            cursor: default;
+        }
+    }
+
+    &__ellipsis {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 38px;
+        height: 38px;
+        color: colours.$colour-text-muted;
+        user-select: none;
+    }
+}

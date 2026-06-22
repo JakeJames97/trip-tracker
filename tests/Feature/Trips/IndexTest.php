@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Trips;
 
+use App\Enums\TripStatus;
 use App\Models\Destination;
 use App\Models\Trip;
 use App\Models\User;
@@ -31,6 +32,50 @@ class IndexTest extends TestCase
             ->assertOk()
             ->assertJsonCount(2, 'data')
             ->assertJsonPath('data.0.destinations_count', 4);
+    }
+
+    #[Test]
+    public function it_returns_pagination_as_expected(): void
+    {
+        $user = User::factory()->create();
+
+        Trip::factory()->times(20)->create([
+            'user_id' => $user->id,
+        ]);
+
+        Trip::factory()->count(3)->create();
+
+        Sanctum::actingAs($user);
+
+        $this->getJson('/api/trips?page=2')
+            ->assertOk()
+            ->assertJsonPath('meta.current_page', 2)
+            ->assertJsonPath('meta.last_page', 2)
+            ->assertJsonPath('meta.total', 20);
+    }
+
+    #[Test]
+    public function it_returns_pagination_and_status_filtering_as_expected(): void
+    {
+        $user = User::factory()->create();
+
+        Trip::factory()->times(30)->create([
+            'user_id' => $user->id,
+            'status' => TripStatus::COMPLETED,
+        ]);
+
+        Trip::factory()->times(20)->create([
+            'user_id' => $user->id,
+            'status' => TripStatus::PLANNED,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->getJson('/api/trips?page=2&status=' . TripStatus::COMPLETED->value)
+            ->assertOk()
+            ->assertJsonPath('meta.current_page', 2)
+            ->assertJsonPath('meta.last_page', 3)
+            ->assertJsonPath('meta.total', 30);
     }
 
     #[Test]

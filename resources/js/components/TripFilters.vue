@@ -5,8 +5,8 @@
       :key="filter.value"
       type="button"
       class="trip-filters__filter"
-      :class="{ 'trip-filters__filter--active': modelValue === filter.value }"
-      @click="$emit('update:modelValue', filter.value)"
+      :class="{ 'trip-filters__filter--active': currentFilter === filter.value }"
+      @click="setFilter(filter.value)"
     >
       {{ filter.label }}
     </button>
@@ -15,20 +15,24 @@
 
 <script setup lang="ts">
 import type { TripStatus } from '@/types/trips.ts';
-import type {PropType} from "vue";
+import {ref} from "vue";
+import {useRoute, useRouter} from "vue-router";
 
 type Filter = TripStatus | 'all';
 
-defineProps({
-  modelValue: {
-    type: String as PropType<Filter>,
-    required: true,
-  },
-});
+const router = useRouter();
+const route = useRoute();
 
-defineEmits({
-  'update:modelValue': (value: Filter) => true,
-});
+const currentFilter = ref(<Filter>route.query.status || 'all');
+
+function setFilter(status: Filter) {
+  currentFilter.value = status;
+  if (status === 'all') {
+    router.push({ query: { page: '1' } });
+    return;
+  }
+  router.push({ query: { ...route.query, status, page: '1' } });
+}
 
 const filters: { value: Filter; label: string }[] = [
   { value: 'all', label: 'All' },

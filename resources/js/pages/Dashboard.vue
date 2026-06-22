@@ -3,7 +3,6 @@
     <div class="dashboard__controls">
       <TripFilters
         v-if="!loading && !error && tripsStore.trips.length"
-        v-model="activeFilter"
       />
       <BaseButton @click="createOpen = true">Create trip</BaseButton>
     </div>
@@ -13,47 +12,49 @@
     <p v-else-if="tripsStore.trips.length === 0" class="dashboard__empty">
       No trips yet. Create your first one to get started.
     </p>
-    <p v-else-if="visibleTrips.length === 0" class="dashboard__empty">
+    <p v-else-if="tripsStore.trips.length === 0" class="dashboard__empty">
       No matching trips.
     </p>
 
     <div v-else class="dashboard__grid">
-      <TripCard v-for="trip in visibleTrips" :key="trip.id" :trip="trip" />
+      <TripCard v-for="trip in tripsStore.trips" :key="trip.id" :trip="trip"/>
     </div>
   </div>
 
-  <TripForm v-model:open="createOpen" @saved="onCreated" />
+  <Pagination
+    v-if="tripsStore.paginationMeta"
+    :last-page="tripsStore.paginationMeta.last_page"
+    :current-page="tripsStore.paginationMeta.current_page"
+  />
+
+  <TripForm v-model:open="createOpen" @saved="onCreated"/>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { useTripsStore } from '@/stores/useTripsStore.ts';
+import {onMounted, ref, watch} from 'vue';
+import {useTripsStore} from '@/stores/useTripsStore.ts';
 import TripCard from '@/components/TripCard.vue';
 import TripFilters from '@/components/TripFilters.vue';
 import * as tripsApi from '@/api/trips';
-import type {Trip, TripStatus} from '@/types/trips.ts';
+import type {Trip} from '@/types/trips.ts';
 import {useApiRequest} from "@/composables/useApiRequest.ts";
 import BaseButton from "@/components/BaseButton.vue";
 import TripForm from "@/components/modals/TripForm.vue";
-import { useNotificationStore } from '@/stores/useNotificationStore.ts';
+import {useNotificationStore} from '@/stores/useNotificationStore.ts';
+import Pagination from "@/components/Pagination.vue";
+import {useRoute} from "vue-router";
 
+const route = useRoute();
 const notify = useNotificationStore();
 const tripsStore = useTripsStore();
-const { loading, error, execute } = useApiRequest();
+const {loading, error, execute} = useApiRequest();
 
 const createOpen = ref(false);
-const activeFilter = ref<TripStatus | 'all'>('all');
-
-const visibleTrips = computed(() =>
-  activeFilter.value === 'all'
-    ? tripsStore.trips
-    : tripsStore.trips.filter((trip) => trip.status === activeFilter.value),
-);
-
-async function loadTrips() {
-  const result = await execute(() => tripsApi.getTrips());
+async function loadTrips(page: number, status?: string) {
+  const result = await execute(() => tripsApi.getTrips(page, status));
   if (result) {
-    tripsStore.setTrips(result);
+    tripsStore.setTrips(result.data);
+    tripsStore.setPaginationMeta(result.meta);
   }
 }
 
@@ -63,6 +64,17 @@ function onCreated(trip: Trip) {
 }
 
 onMounted(() => {
-  loadTrips();
+  const page = Number(route.query.page) || 1;
+  const status = (route.query.status as string) || undefined;
+  loadTrips(page, status);
 });
+
+watch(
+  () => route.query,
+  () => {
+    const page = Number(route.query.page) || 1;
+    const status = (route.query.status as string) || undefined;
+    loadTrips(page, status);
+  },
+);
 </script>
