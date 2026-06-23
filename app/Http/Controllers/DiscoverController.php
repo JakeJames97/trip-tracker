@@ -16,6 +16,7 @@ class DiscoverController extends Controller
 
         $trips = Trip::query()
             ->public()
+            ->with('user')
             ->withCount('destinations')
             ->when($params['status'] ?? null, fn ($q, $status) => $q->where('status', $status))
             ->latest()

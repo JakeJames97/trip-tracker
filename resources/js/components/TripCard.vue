@@ -8,10 +8,15 @@
 
       <p class="trip-card__dates">{{ formatDateRange(trip.start_date, trip.end_date) }}</p>
 
-      <p class="trip-card__meta">
-        {{ trip.destinations_count }}
-        {{ trip.destinations_count === 1 ? 'destination' : 'destinations' }}
-      </p>
+      <div class="trip-card__meta">
+        <p>
+          {{ trip.destinations_count }}
+          {{ trip.destinations_count === 1 ? 'destination' : 'destinations' }}
+        </p>
+        <p v-if="trip.user" class="trip-card__owner">
+          by {{ trip.is_owner ? 'you' : trip.user.username }}
+        </p>
+      </div>
     </div>
   </router-link>
 </template>

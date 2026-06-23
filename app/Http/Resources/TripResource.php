@@ -19,6 +19,9 @@ class TripResource extends JsonResource
             'is_public' => $this->resource->is_public,
             'is_owner' => $request->user()?->id === $this->resource->user_id,
             'created_at' => $this->resource->created_at->toDateTimeString(),
+            'user' => $this->whenLoaded('user', fn () => [
+                'username' => $this->resource->user->username,
+            ]),
             'destinations_count' => $this->whenCounted('destinations'),
             'destinations' => DestinationResource::collection($this->whenLoaded('destinations')),
         ];
