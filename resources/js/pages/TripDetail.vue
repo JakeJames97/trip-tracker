@@ -5,13 +5,13 @@
       Back to trips
     </button>
 
-    <p v-if="loading">Loading…</p>
+    <TripDetailSkeleton v-if="loading" />
 
     <p v-else-if="error" class="empty-state">
       {{ error }}
     </p>
 
-    <template v-else-if="trip">
+    <div v-else-if="trip">
       <header class="trip-detail__header">
         <div>
           <div class="trip-detail__title">
@@ -43,7 +43,7 @@
       />
 
       <TripForm v-model:open="editOpen" :trip="trip" @saved="onSaved" :key="trip.id" />
-    </template>
+    </div>
   </div>
 </template>
 
@@ -63,6 +63,7 @@ import TripForm from '@/components/modals/TripForm.vue';
 import DestinationList from '@/components/DestinationList.vue';
 import type { Trip } from '@/types/trips.ts';
 import { useNotificationStore } from '@/stores/useNotificationStore.ts';
+import TripDetailSkeleton from "@/components/placeholders/TripDetailSkeleton.vue";
 
 const notify = useNotificationStore();
 const route = useRoute();
