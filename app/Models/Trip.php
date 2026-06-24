@@ -63,4 +63,22 @@ class Trip extends Model
     {
         $query->where('is_public', true);
     }
+
+    #[Scope]
+    protected function planned(Builder $query): void
+    {
+        $query->where('status', TripStatus::PLANNED->value);
+    }
+
+    #[Scope]
+    protected function completed(Builder $query): void
+    {
+        $query->where('status', TripStatus::COMPLETED->value);
+    }
+
+    #[Scope]
+    protected function inProgress(Builder $query): void
+    {
+        $query->where('status', TripStatus::PROGRESS->value);
+    }
 }
