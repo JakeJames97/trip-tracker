@@ -43,6 +43,11 @@
         margin: 0;
     }
 
+    &__title {
+        display: flex;
+        gap: 12px;
+    }
+
     &__dates {
         font-size: typography.$font-size-sm;
         color: colours.$colour-text-muted;

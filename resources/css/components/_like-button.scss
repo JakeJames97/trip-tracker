@@ -1,0 +1,43 @@
+@use '../common/colours';
+@use '../common/typography';
+
+.like-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    color: colours.$colour-text-muted;
+    border-radius: 8px;
+    transition: color 0.15s ease;
+
+    &__icon {
+        width: 18px;
+        height: 18px;
+        fill: none;
+        transition: fill 0.15s ease, transform 0.1s ease;
+    }
+
+    &__count {
+        font-size: typography.$font-size-sm;
+        font-variant-numeric: tabular-nums;
+    }
+
+    &:hover {
+        color: colours.$colour-danger;
+    }
+
+    &--liked {
+        color: colours.$colour-danger;
+
+        .like-button__icon {
+            fill: colours.$colour-danger;
+        }
+    }
+
+    &:active .like-button__icon {
+        transform: scale(0.85);
+    }
+}

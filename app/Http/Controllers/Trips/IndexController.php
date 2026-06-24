@@ -18,6 +18,8 @@ class IndexController extends Controller
         $trips = $request->user()
             ->trips()
             ->withCount('destinations')
+            ->withCount('likes')
+            ->with('likes')
             ->when($params['status'] ?? null, fn ($q, $status) => $q->where('status', $status))
             ->latest('start_date')
             ->paginate(page: $page);

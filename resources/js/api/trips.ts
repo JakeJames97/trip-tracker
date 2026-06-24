@@ -1,5 +1,5 @@
 import api from '@/lib/axios';
-import type {Trip, TripPayload} from '@/types/trips.ts';
+import type {ToggleLikeResponse, Trip, TripPayload} from '@/types/trips.ts';
 import type {Paginated} from "@/types/pagination.ts";
 
 export async function getTrips(page = 1, status?: string): Promise<Paginated<Trip>> {
@@ -39,4 +39,11 @@ export async function createTrip(payload: TripPayload) {
 
 export function deleteTrip(id: string) {
   return api.delete(`/trips/${id}`);
+}
+
+export async function toggleLike(tripId: string) {
+  const res = await api.post<ToggleLikeResponse>(
+    `/trips/${tripId}/like`,
+  );
+  return res.data;
 }

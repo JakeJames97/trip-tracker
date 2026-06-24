@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Trips;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Trips\GetTripsRequest;
 use App\Http\Resources\TripResource;
 use App\Models\Trip;
@@ -16,8 +17,8 @@ class DiscoverController extends Controller
 
         $trips = Trip::query()
             ->public()
-            ->with('user')
-            ->withCount('destinations')
+            ->with(['user', 'likes'])
+            ->withCount(['destinations', 'likes'])
             ->when($params['status'] ?? null, fn ($q, $status) => $q->where('status', $status))
             ->latest()
             ->paginate(page: $page);

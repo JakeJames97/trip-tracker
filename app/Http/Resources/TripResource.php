@@ -22,6 +22,8 @@ class TripResource extends JsonResource
             'user' => $this->whenLoaded('user', fn () => [
                 'username' => $this->resource->user->username,
             ]),
+            'is_liked' => $this->when($request->user() !== null, fn () => $this->resource->likes->contains($request->user()->id)),
+            'likes_count' => $this->whenCounted('likes'),
             'destinations_count' => $this->whenCounted('destinations'),
             'destinations' => DestinationResource::collection($this->whenLoaded('destinations')),
         ];

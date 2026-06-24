@@ -56,6 +56,27 @@ class TripResourceTest extends TestCase
         $this->assertSame(3, $array['destinations_count']);
     }
 
+    public function test_it_includes_likes_count_when_counted(): void
+    {
+        $user = User::factory()->create();
+        $user2 = User::factory()->create();
+
+        $trip = Trip::factory()->for($user)->create();
+
+        $user->likedTrips()->attach($trip);
+        $user2->likedTrips()->attach($trip);
+
+        $trip->loadCount('likes');
+
+        $request = request();
+        $request->setUserResolver(fn () => $user);
+
+        $array = new TripResource($trip)->toArray($request);
+
+        $this->assertSame(2, $array['likes_count']);
+        $this->assertTrue($array['is_liked']);
+    }
+
     public function test_it_returns_true_for_is_owner_when_user_is_owner(): void
     {
         $user = User::factory()->create();

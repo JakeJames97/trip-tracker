@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\CountriesController;
-use App\Http\Controllers\DiscoverController;
+use App\Http\Controllers\Trips\DiscoverController;
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/trips.php';

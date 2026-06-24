@@ -47,6 +47,7 @@ const {loading, error, execute} = useApiRequest();
 
 const createOpen = ref(false);
 async function loadTrips(page: number, status?: string) {
+  tripsStore.setTrips([]);
   const result = await execute(() => tripsApi.getTrips(page, status));
   if (result) {
     tripsStore.setTrips(result.data);

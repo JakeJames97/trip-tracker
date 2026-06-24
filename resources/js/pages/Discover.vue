@@ -38,6 +38,7 @@ const tripsStore = useTripsStore();
 const {loading, error, execute} = useApiRequest();
 
 async function loadTrips(page: number, status?: string) {
+  tripsStore.setTrips([]);
   const result = await execute(() => tripsApi.discoverTrips(page, status));
   if (result) {
     tripsStore.setTrips(result.data);

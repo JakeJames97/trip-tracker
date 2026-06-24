@@ -2,8 +2,15 @@
   <router-link :to="{ name: 'trip', params: { id: trip.id } }" class="trip-card">
     <div class="trip-card__body">
       <div class="trip-card__top">
-        <h3 class="trip-card__name">{{ trip.name }}</h3>
-        <StatusPill :status="trip.status" />
+        <div class="trip-card__title">
+          <h3 class="trip-card__name">{{ trip.name }}</h3>
+          <StatusPill :status="trip.status" />
+        </div>
+        <LikeButton
+          :trip-id="trip.id"
+          :is-liked="trip.is_liked"
+          :likes-count="trip.likes_count"
+        />
       </div>
 
       <p class="trip-card__dates">{{ formatDateRange(trip.start_date, trip.end_date) }}</p>
@@ -26,6 +33,7 @@ import { formatDateRange } from '@/lib/date';
 import type { Trip } from '@/types/trips.ts';
 import type {PropType} from "vue";
 import StatusPill from "@/components/StatusPill.vue";
+import LikeButton from "@/components/LikeButton.vue";
 
 defineProps({
   trip: {
