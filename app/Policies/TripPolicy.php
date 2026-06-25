@@ -21,4 +21,9 @@ class TripPolicy
     {
         return $user->id === $trip->user_id;
     }
+
+    public function clone(User $user, Trip $trip): bool
+    {
+        return $trip->is_public && $trip->user_id !== $user->id;
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Trips\CloneController;
 use App\Http\Controllers\Trips\CreateController;
 use App\Http\Controllers\Trips\DeleteController;
 use App\Http\Controllers\Trips\IndexController;
@@ -15,4 +16,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/trips/{trip}', UpdateController::class)->can('update', 'trip');
     Route::delete('/trips/{trip}', DeleteController::class)->can('delete', 'trip');
     Route::post('/trips/{trip}/like', ToggleLikesController::class);
+    Route::post('/trips/{trip}/clone', CloneController::class);
 });

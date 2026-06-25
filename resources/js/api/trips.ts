@@ -47,3 +47,8 @@ export async function toggleLike(tripId: string) {
   );
   return res.data;
 }
+
+export async function cloneTrip(tripId: string) {
+  const res = await api.post<{ data: Trip }>(`/trips/${tripId}/clone`);
+  return res.data.data;
+}

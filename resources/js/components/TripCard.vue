@@ -2,15 +2,15 @@
   <router-link :to="{ name: 'trip', params: { id: trip.id } }" class="trip-card">
     <div class="trip-card__body">
       <div class="trip-card__top">
-        <div class="trip-card__title">
-          <h3 class="trip-card__name">{{ trip.name }}</h3>
+        <h3 class="trip-card__name">{{ trip.name }}</h3>
+        <div class="trip-card__status">
           <StatusPill :status="trip.status" />
+          <LikeButton
+            :trip-id="trip.id"
+            :is-liked="trip.is_liked"
+            :likes-count="trip.likes_count"
+          />
         </div>
-        <LikeButton
-          :trip-id="trip.id"
-          :is-liked="trip.is_liked"
-          :likes-count="trip.likes_count"
-        />
       </div>
 
       <p class="trip-card__dates">{{ formatDateRange(trip.start_date, trip.end_date) }}</p>
