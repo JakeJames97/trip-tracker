@@ -5,8 +5,10 @@ namespace Tests\Feature\Trips;
 use App\Models\Destination;
 use App\Models\Trip;
 use App\Models\User;
+use App\Notifications\TripCloned;
 use App\Services\TripService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
 use RuntimeException;
@@ -15,6 +17,13 @@ use Tests\TestCase;
 class CloneTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Notification::fake();
+    }
 
     #[Test]
     public function it_clones_a_public_trip(): void
@@ -36,6 +45,12 @@ class CloneTest extends TestCase
             'name' => 'Japan 2026 (copy)',
             'user_id' => $user->id,
         ]);
+
+        Notification::assertSentTo(
+            $owner,
+            TripCloned::class,
+            fn ($notification) => $notification->cloner->id === $user->id,
+        );
     }
 
     #[Test]

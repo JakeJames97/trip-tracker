@@ -4,7 +4,9 @@ namespace Tests\Feature\Trips;
 
 use App\Models\Trip;
 use App\Models\User;
+use App\Notifications\TripLiked;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -13,11 +15,20 @@ class ToggleLikesTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Notification::fake();
+    }
+
     #[Test]
     public function it_likes_a_trip(): void
     {
         $user = User::factory()->create();
-        $trip = Trip::factory()->for(User::factory())->create();
+        $owner = User::factory()->create();
+
+        $trip = Trip::factory()->for($owner)->create();
 
         $trip->likes()->attach(User::factory()->count(2)->create());
 
@@ -36,6 +47,13 @@ class ToggleLikesTest extends TestCase
             'user_id' => $user->id,
             'trip_id' => $trip->id,
         ]);
+
+        Notification::assertSentTo(
+            $owner,
+            TripLiked::class,
+            fn ($notification) => $notification->trip->id === $trip->id
+                && $notification->liker->id === $user->id,
+        );
     }
 
     #[Test]

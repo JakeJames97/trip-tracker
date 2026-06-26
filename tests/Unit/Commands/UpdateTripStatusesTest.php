@@ -1,11 +1,13 @@
 <?php
 
-namespace Tests\Feature\Commands;
+namespace Tests\Unit\Commands;
 
 use App\Enums\TripStatus;
 use App\Models\Trip;
 use App\Models\User;
+use App\Notifications\TripStatusChanged;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -13,10 +15,18 @@ class UpdateTripStatusesTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Notification::fake();
+    }
+
     #[Test]
     public function it_marks_a_started_trip_in_progress(): void
     {
-        $trip = Trip::factory()->for(User::factory())->create([
+        $owner = User::factory()->create();
+        $trip = Trip::factory()->for($owner)->create([
             'status' => TripStatus::PLANNED,
             'start_date' => now()->subDay(),
             'end_date' => now()->addDay(),
@@ -28,12 +38,20 @@ class UpdateTripStatusesTest extends TestCase
             'id' => $trip->id,
             'status' => TripStatus::PROGRESS,
         ]);
+
+        Notification::assertSentTo(
+            $owner,
+            TripStatusChanged::class,
+            fn ($notification) => $notification->trip->id === $trip->id
+                && $notification->status === TripStatus::PROGRESS,
+        );
     }
 
     #[Test]
     public function it_marks_an_ended_trip_completed(): void
     {
-        $trip = Trip::factory()->for(User::factory())->create([
+        $owner = User::factory()->create();
+        $trip = Trip::factory()->for($owner)->create([
             'status' => TripStatus::PROGRESS,
             'start_date' => now()->subDays(5),
             'end_date' => now()->subDay(),
@@ -45,6 +63,13 @@ class UpdateTripStatusesTest extends TestCase
             'id' => $trip->id,
             'status' => TripStatus::COMPLETED,
         ]);
+
+        Notification::assertSentTo(
+            $owner,
+            TripStatusChanged::class,
+            fn ($notification) => $notification->trip->id === $trip->id
+                && $notification->status === TripStatus::COMPLETED,
+        );
     }
 
     #[Test]
@@ -62,12 +87,15 @@ class UpdateTripStatusesTest extends TestCase
             'id' => $trip->id,
             'status' => TripStatus::PLANNED,
         ]);
+
+        Notification::assertNothingSent();
     }
 
     #[Test]
     public function it_completes_a_planned_trip_whose_end_date_already_passed(): void
     {
-        $trip = Trip::factory()->for(User::factory())->create([
+        $owner = User::factory()->create();
+        $trip = Trip::factory()->for($owner)->create([
             'status' => TripStatus::PLANNED,
             'start_date' => now()->subDays(3),
             'end_date' => now()->subDays(2),
@@ -79,6 +107,13 @@ class UpdateTripStatusesTest extends TestCase
             'id' => $trip->id,
             'status' => TripStatus::COMPLETED,
         ]);
+
+        Notification::assertSentTo(
+            $owner,
+            TripStatusChanged::class,
+            fn ($notification) => $notification->trip->id === $trip->id
+                && $notification->status === TripStatus::COMPLETED,
+        );
     }
 
     #[Test]
@@ -127,5 +162,7 @@ class UpdateTripStatusesTest extends TestCase
         $this->assertSame(2, Trip::where('status', TripStatus::PROGRESS)->count());
         $this->assertSame(3, Trip::where('status', TripStatus::COMPLETED)->count());
         $this->assertSame(1, Trip::where('status', TripStatus::PLANNED)->count());
+
+        Notification::assertSentTimes(TripStatusChanged::class, 5);
     }
 }

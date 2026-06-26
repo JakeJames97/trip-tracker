@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Enums\TripStatus;
 use App\Models\Trip;
+use App\Notifications\TripStatusChanged;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 
@@ -28,18 +29,36 @@ class UpdateTripStatuses extends Command
 
     private function handleStartedTrips(Carbon $date): int
     {
-        return Trip::query()
+        $trips = Trip::query()
+            ->with('user')
             ->planned()
             ->whereDate('start_date', '<=', $date)
             ->whereDate('end_date', '>=', $date)
-            ->update(['status' => TripStatus::PROGRESS->value]);
+            ->get();
+
+        foreach ($trips as $trip) {
+            $trip->user->notify(new TripStatusChanged($trip, TripStatus::PROGRESS));
+        }
+
+        Trip::whereIn('id', $trips->pluck('id'))->update(['status' => TripStatus::PROGRESS->value]);
+
+        return $trips->count();
     }
 
     private function handleCompletedTrips(Carbon $date): int
     {
-        return Trip::query()
+        $trips = Trip::query()
+            ->with('user')
             ->whereIn('status', [TripStatus::PLANNED->value, TripStatus::PROGRESS->value])
             ->whereDate('end_date', '<', $date)
-            ->update(['status' => TripStatus::COMPLETED->value]);
+            ->get();
+
+        foreach ($trips as $trip) {
+            $trip->user->notify(new TripStatusChanged($trip, TripStatus::COMPLETED));
+        }
+
+        Trip::whereIn('id', $trips->pluck('id'))->update(['status' => TripStatus::COMPLETED->value]);
+
+        return $trips->count();
     }
 }
