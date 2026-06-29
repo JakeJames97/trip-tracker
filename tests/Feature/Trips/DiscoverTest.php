@@ -198,11 +198,4 @@ class DiscoverTest extends TestCase
                 'data' => [],
             ]);
     }
-
-    #[Test]
-    public function it_requires_authentication(): void
-    {
-        $this->getJson('/api/discover')
-            ->assertUnauthorized();
-    }
 }

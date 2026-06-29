@@ -1,0 +1,13 @@
+<svg class="contours" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M-20 120 Q 120 60 240 130 T 460 120" />
+        <path d="M-20 200 Q 140 140 260 210 T 460 200" />
+        <path d="M-20 320 Q 120 260 240 330 T 460 320" />
+        <path d="M-20 440 Q 140 380 260 450 T 460 440" />
+    </g>
+    <path
+        d="M60 460 Q 180 300 280 340 T 420 180"
+        fill="none" stroke="currentColor" stroke-width="2"
+        stroke-dasharray="2 8" stroke-linecap="round"
+    />
+</svg>

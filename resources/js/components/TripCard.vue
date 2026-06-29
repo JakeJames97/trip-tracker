@@ -6,6 +6,7 @@
         <div class="trip-card__status">
           <StatusPill :status="trip.status" />
           <LikeButton
+            v-if="auth.isAuthenticated"
             :trip-id="trip.id"
             :is-liked="trip.is_liked"
             :likes-count="trip.likes_count"
@@ -34,6 +35,8 @@ import type { Trip } from '@/types/trips.ts';
 import type {PropType} from "vue";
 import StatusPill from "@/components/StatusPill.vue";
 import LikeButton from "@/components/LikeButton.vue";
+import { useAuthStore } from '@/stores/useAuthStore.ts';
+
 
 defineProps({
   trip: {
@@ -42,4 +45,5 @@ defineProps({
   },
 });
 
+const auth = useAuthStore();
 </script>

@@ -31,12 +31,4 @@ class ShowTest extends TestCase
             ->assertJsonCount(1, 'data.destinations')
             ->assertJsonCount(2, 'data.destinations.0.tasks');
     }
-
-    #[Test]
-    public function it_requires_authentication(): void
-    {
-        $trip = Trip::factory()->create();
-
-        $this->getJson("/api/trips/{$trip->id}")->assertUnauthorized();
-    }
 }

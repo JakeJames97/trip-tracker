@@ -6,6 +6,15 @@ const router = createRouter({
     routes: [
       {
         path: '/',
+        component: () => import('../layouts/App.vue'),
+        children: [
+          { path: '', name: 'home', component: () => import('@/pages/Home.vue') },
+          { path: 'discover', name: 'discover', component: () => import('@/pages/Discover.vue') },
+          { path: 'trips/:id', name: 'trip', component: () => import('@/pages/TripDetail.vue') },
+        ],
+      },
+      {
+        path: '/',
         component: () => import('../layouts/Auth.vue'),
         meta: { requiresGuest: true },
         children: [
@@ -18,10 +27,8 @@ const router = createRouter({
         component: () => import('../layouts/App.vue'),
         meta: { requiresAuth: true },
         children: [
-          { path: '', name: 'home', component: () => import('@/pages/Home.vue') },
           { path: 'dashboard', name: 'dashboard', component: () => import('@/pages/Dashboard.vue') },
-          { path: 'discover', name: 'discover', component: () => import('@/pages/Discover.vue') },
-          { path: 'trips/:id', name: 'trip', component: () => import('@/pages/TripDetail.vue') },
+          { path: 'trips', name: 'trips', component: () => import('@/pages/Trips.vue') },
         ],
       },
     ],

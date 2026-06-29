@@ -1,12 +1,12 @@
 <template>
   <div class="trip-detail">
     <div class="trip-detail__topbar">
-      <button type="button" class="trip-detail__back" @click="router.push({ name: 'dashboard' })">
+      <button type="button" class="trip-detail__back" @click="router.push({ name: 'discover' })">
         <ChevronLeftIcon class="trip-detail__back-icon" />
         Back to trips
       </button>
       <LikeButton
-        v-if="trip"
+        v-if="trip && auth.isAuthenticated"
         :trip-id="trip.id"
         :is-liked="trip.is_liked"
         :likes-count="trip.likes_count"
@@ -28,7 +28,7 @@
               <StatusPill :status="trip.status"/>
               <span class="trip-detail__visibility">{{ trip.is_public ? 'Public' : 'Private' }}</span>
             </div>
-            <div class="trip-detail__actions">
+            <div v-if="auth.isAuthenticated" class="trip-detail__actions">
               <template v-if="trip.is_owner">
                 <BaseButton variant="primary" @click="editOpen = true">Edit</BaseButton>
                 <BaseButton variant="danger" @click="confirmOpen = true">Delete</BaseButton>
@@ -86,7 +86,10 @@ const notify = useNotificationStore();
 const route = useRoute();
 const router = useRouter();
 const tripStore = useTripStore();
+import { useAuthStore } from '@/stores/useAuthStore.ts';
+
 const {trip} = storeToRefs(tripStore);
+const auth = useAuthStore();
 
 const {loading, error, execute: executeLoad} = useApiRequest();
 const {loading: deleting, execute: executeDelete} = useApiRequest();

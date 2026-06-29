@@ -15,7 +15,7 @@
 
 .header {
     @include container-gutters;
-    margin: 20px auto 0 auto;
+    margin: 40px auto 0 auto;
 
     &__pill {
         background: colours.$colour-surface;
@@ -110,30 +110,42 @@
         }
     }
 
-    &__logout {
-        &--desktop {
-            display: none !important;
+    &__action--desktop {
+        display: none !important;
+        @include breakpoints.above(breakpoints.$tablet) {
+            display: inline-flex !important;
+        }
+    }
 
-            @include breakpoints.above(breakpoints.$tablet) {
-                display: inline-flex !important;
-            }
+    &__menu-auth {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+        padding-top: 12px;
+    }
+
+    &__menu-auth-btn {
+        flex: 1;
+    }
+
+    &__menu-action {
+        padding: 12px 14px;
+        border: none;
+        background: none;
+        border-radius: 10px;
+        text-align: left;
+        font-size: typography.$font-size-base;
+        font-weight: 500;
+        color: colours.$colour-text;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+            background: colours.$colour-bg;
         }
 
-        &--mobile {
-            margin-top: 4px;
-            padding: 12px 14px;
-            border: none;
-            background: none;
-            border-radius: 10px;
-            text-align: left;
-            font-size: typography.$font-size-base;
-            font-weight: 500;
+        &--danger {
             color: colours.$colour-danger;
-            cursor: pointer;
-
-            &:hover {
-                background: colours.$colour-bg;
-            }
         }
     }
 
