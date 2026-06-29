@@ -15,7 +15,7 @@
 
 .header {
     @include container-gutters;
-    margin: 40px auto 0 auto;
+    margin: 20px auto 0 auto;
 
     &__pill {
         background: colours.$colour-surface;
