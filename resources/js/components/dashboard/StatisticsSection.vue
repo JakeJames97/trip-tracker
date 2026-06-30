@@ -31,7 +31,7 @@ const props = defineProps({
   },
 });
 
-const worldPercent = computed(() => Math.round((props.stats.countries / 195) * 100));
+const worldPercent = computed(() => Math.round((props.stats.countries.length / 195) * 100));
 
 const cards = computed(() => [
   {
@@ -45,7 +45,7 @@ const cards = computed(() => [
     variant: 'countries',
     icon: GlobeAltIcon,
     label: 'Countries Visited',
-    value: props.stats.countries,
+    value: props.stats.countries.length,
     sub: `${worldPercent.value}% of the world`,
   },
   {

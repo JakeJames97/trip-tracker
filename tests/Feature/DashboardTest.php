@@ -47,7 +47,11 @@ class DashboardTest extends TestCase
             ->assertJsonPath('data.stats', [
                 'total_trips' => 3,
                 'total_destinations_planned' => 3,
-                'countries' => 3,
+                'countries' => [
+                    'ES',
+                    'FR',
+                    'JP',
+                ],
                 'likes_received' => 3,
                 'tasks_to_do' => 5,
             ]);

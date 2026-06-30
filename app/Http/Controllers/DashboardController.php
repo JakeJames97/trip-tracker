@@ -18,7 +18,7 @@ class DashboardController
             'total_destinations_planned' => $user->destinations()
                 ->where('trips.status', '!=', TripStatus::COMPLETED)
                 ->count(),
-            'countries' => $user->destinations()->distinct('country_code')->count('country_code'),
+            'countries' => $user->destinations()->distinct('country_code')->pluck('country_code')->all(),
             'likes_received' => $user->trips()
                 ->withCount('likes')
                 ->get()

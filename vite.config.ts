@@ -11,7 +11,18 @@ export default defineConfig({
       refresh: true,
     }),
     vue(),
-    svgLoader(),
+    svgLoader({
+      svgoConfig: {
+        plugins: [
+          {
+            name: 'cleanupIds',
+            params: {
+              remove: false,
+            }
+          },
+        ],
+      },
+    }),
   ],
   resolve: {
     alias: {

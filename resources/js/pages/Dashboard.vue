@@ -6,6 +6,7 @@
     </header>
 
     <StatisticsSection :stats="stats"/>
+    <WorldMap :highlighted="stats.countries"/>
   </div>
 </template>
 
@@ -16,13 +17,14 @@ import * as dashboardApi from '@/api/dashboard';
 import type {DashboardStats} from '@/types/dashboard';
 import type {Trip} from '@/types/trips';
 import StatisticsSection from "@/components/dashboard/StatisticsSection.vue";
+import WorldMap from "@/components/dashboard/WorldMap.vue";
 
 const auth = useAuthStore();
 const username = computed(() => auth.user?.username ?? '');
 
 const stats = ref<DashboardStats>({
   total_trips: 0,
-  countries: 0,
+  countries: [],
   likes_received: 0,
   total_destinations_planned: 0,
   tasks_to_do: 0

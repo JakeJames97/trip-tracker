@@ -7,7 +7,6 @@
     display: grid;
     gap: 16px;
     grid-template-columns: repeat(2, 1fr);
-    margin-bottom: 28px;
 
     @include breakpoints.above(breakpoints.$tablet) {
         grid-template-columns: repeat(5, 1fr);
