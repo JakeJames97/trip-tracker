@@ -17,6 +17,7 @@ export interface Trip {
   created_at: string;
   destinations_count: number;
   likes_count: number;
+  budget_formatted: string;
   user: User;
   destinations?: Destination[];
 }

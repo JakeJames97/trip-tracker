@@ -23,12 +23,12 @@
 </template>
 
 <script setup lang="ts">
-import japan from "@/images/destinations/japan.jpg";
-import bosnia from "@/images/destinations/bosnia.jpg";
-import croatia from "@/images/destinations/croatia.jpg";
-import unitedStates from "@/images/destinations/united-states.jpg";
-import hungary from "@/images/destinations/hungary.jpg";
-import germany from "@/images/destinations/germany.jpg";
+import japan from "@/images/destinations/jp.jpg";
+import bosnia from "@/images/destinations/ba.jpg";
+import croatia from "@/images/destinations/hr.jpg";
+import unitedStates from "@/images/destinations/us.jpg";
+import hungary from "@/images/destinations/hu.jpg";
+import germany from "@/images/destinations/de.jpg";
 import {getFlagClass} from "@/helpers.ts";
 
 interface FeaturedDestination {

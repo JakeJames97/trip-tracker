@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use Akaunting\Money\Money;
+use App\Models\Trip;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -26,6 +28,17 @@ class TripResource extends JsonResource
             'likes_count' => $this->whenCounted('likes'),
             'destinations_count' => $this->whenCounted('destinations'),
             'destinations' => DestinationResource::collection($this->whenLoaded('destinations')),
+            $this->mergeWhen($this->resource->relationLoaded('destinations'), fn () => $this->budgetData($this->resource)),
+        ];
+    }
+
+    private function budgetData(Trip $trip): array
+    {
+        $total = $trip->destinations->sum(fn ($destination) => $destination->budget);
+
+        return [
+            'budget' => $total,
+            'budget_formatted' => Money::GBP((int) round($total) * 100)->format(),
         ];
     }
 }

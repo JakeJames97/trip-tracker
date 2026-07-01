@@ -110,4 +110,34 @@ class TripResourceTest extends TestCase
 
         $this->assertFalse($array['is_owner']);
     }
+
+    public function test_it_sums_destination_budgets(): void
+    {
+        $trip = Trip::factory()->for(User::factory())->create();
+        Destination::factory()->for($trip)->create(['budget' => 2000]);
+        Destination::factory()->for($trip)->create(['budget' => 3500]);
+        Destination::factory()->for($trip)->create(['budget' => 1000]);
+        $trip->load('destinations');
+
+        $array = new TripResource($trip)->toArray(Request::create('/'));
+
+        $array = $array[0]->data;
+
+        $this->assertSame(6500, $array['budget']);
+        $this->assertSame('£6,500.00', $array['budget_formatted']);
+    }
+
+    public function test_it_returns_zero_budget_when_no_destinations(): void
+    {
+        $trip = Trip::factory()->for(User::factory())->create();
+        $trip->load('destinations');
+
+        $array = new TripResource($trip)->toArray(Request::create('/'));
+
+        $array = $array[0]->data;
+
+        $this->assertArrayHasKey('budget', $array);
+        $this->assertSame(0, $array['budget']);
+        $this->assertSame('£0.00', $array['budget_formatted']);
+    }
 }
