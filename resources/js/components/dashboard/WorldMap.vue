@@ -1,5 +1,6 @@
 <template>
-  <div ref="mapContainer" class="world-map">
+  <WorldMapSkeleton v-if="loading" />
+  <div v-else ref="mapContainer" class="world-map">
     <div class="world-map__heading">
       <h4 class="world-map__title">Your Travel Map</h4>
       <p class="world-map__subtitle">Countries you've visited</p>
@@ -15,11 +16,16 @@
 <script setup lang="ts">
 import {nextTick, onMounted, type PropType, useTemplateRef} from 'vue'
 import WorldMap from '@/assets/world.svg?component';
+import WorldMapSkeleton from "@/components/placeholders/dashboard/WorldMapSkeleton.vue";
 
 const props = defineProps({
   highlighted: {
     type: Array as PropType<string[]>,
     default: () => [],
+  },
+  loading: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -39,6 +45,7 @@ onMounted(async () => {
 <style scoped lang="scss">
 @use './../../../css/common/colours';
 @use './../../../css/common/typography';
+@use './../../../css/common/breakpoints';
 
 .world-map {
   position: relative;
@@ -88,11 +95,15 @@ onMounted(async () => {
   }
 
   :deep(svg) {
-    height: 520px;
+    height: auto;
     width: auto;
     max-width: 100%;
     display: block;
     margin: 0 auto;
+
+    @include breakpoints.above(breakpoints.$tablet) {
+      height: 620px;
+    }
   }
 
   :deep(path) {

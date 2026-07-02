@@ -8,10 +8,13 @@
       <BaseButton @click="createOpen = true">Create trip</BaseButton>
     </header>
 
-    <StatisticsSection :stats="stats"/>
+    <StatisticsSection :stats="stats" :loading="loading"/>
     <div class="dashboard__main">
-      <WorldMap :highlighted="stats.countries" :key="stats.countries.length" />
-      <NextTripCard :trip="nextTrip" class="dashboard__next-trip" :key="nextTrip?.id" />
+      <WorldMap :highlighted="stats.countries" :loading="loading" :key="stats.countries.length"/>
+      <div class="dashboard__main--right">
+        <NextTripCard :trip="nextTrip" :loading="loading" class="dashboard__next-trip" :key="nextTrip?.id"/>
+        <RecentActivity :loading="loading"/>
+      </div>
     </div>
   </div>
   <TripForm v-model:open="createOpen" @saved="onCreated"/>
@@ -21,6 +24,7 @@
 import {ref, computed, onMounted} from 'vue';
 import {useAuthStore} from '@/stores/useAuthStore';
 import * as dashboardApi from '@/api/dashboard';
+import {useApiRequest} from '@/composables/useApiRequest';
 import type {DashboardStats} from '@/types/dashboard';
 import type {Trip} from '@/types/trips';
 import StatisticsSection from "@/components/dashboard/StatisticsSection.vue";
@@ -29,9 +33,11 @@ import NextTripCard from "@/components/dashboard/NextTripCard.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import TripForm from "@/components/modals/TripForm.vue";
 import {useNotificationStore} from "@/stores/useNotificationStore.ts";
+import RecentActivity from "@/components/dashboard/RecentActivity.vue";
 
 const auth = useAuthStore();
 const notify = useNotificationStore();
+const {loading, execute} = useApiRequest();
 const username = computed(() => auth.user?.username ?? '');
 
 
@@ -52,9 +58,13 @@ const stats = ref<DashboardStats>({
 const nextTrip = ref<Trip | null>(null);
 
 async function load() {
-  const data = await dashboardApi.getDashboardData();
-  stats.value = data.data.stats;
-  nextTrip.value = data.data.next_trip;
+  const result = await execute(() => dashboardApi.getDashboardData());
+  if (result) {
+    stats.value = result.data.stats;
+    nextTrip.value = result.data.next_trip;
+  } else {
+    notify.error('An error has occurred attempting to loading the dashboard!');
+  }
 }
 
 onMounted(load);

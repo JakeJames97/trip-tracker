@@ -1,5 +1,6 @@
 <template>
-  <article class="next-trip-card">
+  <NextTripSkeleton v-if="loading" />
+  <article v-else class="next-trip-card">
     <div class="next-trip-card__head">
       <h4 class="next-trip-card__title">Next Trip</h4>
       <PaperAirplaneIcon class="next-trip-card__icon" />
@@ -64,11 +65,17 @@ import type { Trip } from '@/types/trips';
 import BaseButton from "@/components/BaseButton.vue";
 import router from "@/router";
 import {imageForCountry} from "@/helpers";
+import StatisticsSectionSkeleton from "@/components/placeholders/dashboard/StatisticsSectionSkeleton.vue";
+import NextTripSkeleton from "@/components/placeholders/dashboard/NextTripSkeleton.vue";
 
 const props = defineProps({
   trip: {
     type: Object as PropType<Trip | null>,
     default: null,
+  },
+  loading: {
+    type: Boolean,
+    default: false,
   },
 });
 

@@ -1,5 +1,6 @@
 <template>
-  <section class="statistics-section">
+  <StatisticsSectionSkeleton v-if="loading" />
+  <section v-else class="statistics-section">
     <article v-for="card in cards" :key="card.label" class="stat-card">
       <span class="stat-card__icon" :class="`stat-card__icon--${card.variant}`">
         <component :is="card.icon" class="stat-card__icon-svg"/>
@@ -23,11 +24,16 @@ import {
   CheckCircleIcon,
 } from '@heroicons/vue/24/outline';
 import type {DashboardStats} from '@/types/dashboard';
+import StatisticsSectionSkeleton from "@/components/placeholders/dashboard/StatisticsSectionSkeleton.vue";
 
 const props = defineProps({
   stats: {
     type: Object as PropType<DashboardStats>,
     required: true,
+  },
+  loading: {
+    type: Boolean,
+    default: false,
   },
 });
 
